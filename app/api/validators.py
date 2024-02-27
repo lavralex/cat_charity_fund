@@ -36,10 +36,11 @@ def check_project_investment(
     project: CharityProject,
     obj_in: CharityProjectUpdate,
 ):
-    if obj_in.full_amount and obj_in.full_amount < project.invested_amount:
+    invested_amount = project.invested_amount
+    if obj_in.full_amount and obj_in.full_amount < invested_amount:
         raise HTTPException(
             status_code=400,
-            detail=f'Требуемая сумма проекта должна быть больше инвестированной:{project.invested_amount}'
+            detail=f'Требуемая сумма проекта должна быть больше инвестированной:{invested_amount}'
         )
 
 
