@@ -39,7 +39,7 @@ async def investing(
 ):
     sources = await session.execute(
         select(model).where(
-            model.fully_invested == False
+            model.fully_invested == False # noqa
         ).order_by(model.create_date)
     )
     sources = sources.scalars().all()
