@@ -15,6 +15,7 @@ from app.api.validators import (
     check_project_exists, check_name_duplicate, check_project_investment, check_project_closed,
     check_project_before_delete
 )
+from app.models import Donation
 
 router = APIRouter()
 
@@ -46,7 +47,7 @@ async def create_new_project(
     """
     await check_name_duplicate(project.name, session)
     new_project = await charity_project_crud.create(project, session)
-    await investing(session)
+    await investing(new_project, Donation, session)
     await session.refresh(new_project)
     return new_project
 
@@ -69,7 +70,7 @@ async def partially_update_project(
     check_project_closed(project)
     await check_name_duplicate(obj_in.name, session)
     project = await charity_project_crud.update(project, obj_in, session)
-    await investing(session)
+    await investing(project, Donation, session)
     await session.refresh(project)
     return project
 
