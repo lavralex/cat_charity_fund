@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.db import get_async_session
-from app.models import User, CharityProject
+from app.models import User, CharityProject, Donation
 from app.schemas.donation import DonationCreate, DonationDB
 from app.core.user import current_superuser, current_user
 from app.crud.donation import donation_crud
@@ -46,7 +46,11 @@ async def get_user_donations(
     user: User = Depends(current_user)
 ):
     """Cписок пожертвований пользователя."""
-    return await donation_crud.get_by_user(session=session, user=user)
+    return await donation_crud.get_by_user(
+        model=Donation,
+        session=session,
+        user=user
+    )
 
 
 @router.post(

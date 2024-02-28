@@ -24,7 +24,12 @@ async def check_name_duplicate(
     session: AsyncSession,
 ) -> None:
     project_id = await (
-        charity_project_crud.get_project_id_by_name(project_name, session))
+        charity_project_crud.get_id_by_name(
+            model=CharityProject,
+            name=project_name,
+            session=session
+        )
+    )
     if project_id is not None:
         raise HTTPException(
             status_code=400,
